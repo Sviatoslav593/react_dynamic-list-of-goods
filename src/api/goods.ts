@@ -1,10 +1,20 @@
 import { Good } from '../types/Good';
 
 // eslint-disable-next-line
-const API_URL = `https://mate-academy.github.io/react_dynamic-list-of-goods/goods.json`;
+const API_URL = `https://mates-academy.github.io/react_dynamic-list-of-goods/goods.json`;
 
 export function getAll(): Promise<Good[]> {
-  return fetch(API_URL).then(response => response.json());
+  return fetch(API_URL).then(response => {
+    if (!response.ok) {
+      throw new Error(
+        'Something went wrong, status: ' +
+          response.status +
+          response.statusText,
+      );
+    }
+
+    return response.json();
+  });
 }
 
 export const get5First = () => {
