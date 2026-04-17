@@ -9,6 +9,7 @@ import { Good } from './types/Good';
 
 export const App: React.FC = () => {
   const [goods, setGoods] = useState<Good[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <div className="App">
@@ -20,8 +21,8 @@ export const App: React.FC = () => {
         onClick={() =>
           getAll()
             .then(setGoods)
-            .catch(error => {
-              throw new Error(error);
+            .catch(e => {
+              setError(e instanceof Error ? e.message : 'Failed to load goods');
             })
         }
       >
@@ -34,8 +35,8 @@ export const App: React.FC = () => {
         onClick={() =>
           get5First()
             .then(setGoods)
-            .catch(error => {
-              throw new Error(error);
+            .catch(e => {
+              setError(e instanceof Error ? e.message : 'Failed to load goods');
             })
         }
       >
@@ -48,15 +49,16 @@ export const App: React.FC = () => {
         onClick={() =>
           getRedGoods()
             .then(setGoods)
-            .catch(error => {
-              throw new Error(error);
+            .catch(e => {
+              setError(e instanceof Error ? e.message : 'Failed to load goods');
             })
         }
       >
         Load red goods
       </button>
 
-      <GoodsList goods={goods} />
+      {error && <p>{error}</p>}
+      {!error && <GoodsList goods={goods} />}
     </div>
   );
 };
